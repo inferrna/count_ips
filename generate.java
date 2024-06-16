@@ -7,7 +7,10 @@ class Generate {
     //long count = Integer.MAX_VALUE; // Number of random IPs to generate
     long count = 100000000; // Number of random IPs to generate
     SplittableRandom rnd = new SplittableRandom();
-    LongStream.range(0, count).parallel().forEach(i -> {
+    LongStream.range(0, count)
+            .parallel()
+            .unordered()
+            .forEach(i -> {
       // Generate random bytes for the IP address
       byte[] ipAddress = new byte[4];
       rnd.nextBytes(ipAddress);
