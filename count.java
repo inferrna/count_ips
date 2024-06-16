@@ -28,22 +28,19 @@ class CNT {
             reader = new BufferedReader(new InputStreamReader(System.in));
         }
 
-        final BitSet counterNegative = new BitSet(Integer.MAX_VALUE);
-        final BitSet counterPositive = new BitSet(Integer.MAX_VALUE);
+        final BitSet[] counterNegativePositive = new BitSet[] {new BitSet(Integer.MAX_VALUE),
+                                                               new BitSet(Integer.MAX_VALUE) };
         AtomicInteger res = new AtomicInteger();
         reader.lines()
               .parallel()
               .unordered()
               .map(CNT::ipToInt)
               .forEach(ip -> {
-                  if (ip>-1) {
-                      if(!counterPositive.get(ip)) {
-                          res.getAndIncrement();
-                          counterPositive.set(ip);
-                      }
-                  } else if(!counterNegative.get(-ip)) {
+                  int cntSign = ip>-1 ? 1 : 0;
+                  int absIp = Math.abs(ip);
+                  if(!counterNegativePositive[cntSign].get(absIp)) {
                       res.getAndIncrement();
-                      counterNegative.set(-ip);
+                      counterNegativePositive[cntSign].set(absIp);
                   }
               });
 
